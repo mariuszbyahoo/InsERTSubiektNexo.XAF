@@ -39,6 +39,8 @@ namespace InsERTSubiektNexo.XAF.Module.BusinessObjects
         public string Nazwa_Produktu { get { return this.Nazwa ; }}
         [EditorBrowsable(EditorBrowsableState.Never)]
         public decimal Cena { get { return this.CenaEwidencyjna; }}
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string Symbol_Produktu { get { return this.Symbol; } }
 
         [EditorBrowsable(EditorBrowsableState.Always)]
         public string Opis_Produktu { get {return this.Opis; } set { this.Opis = value; } }

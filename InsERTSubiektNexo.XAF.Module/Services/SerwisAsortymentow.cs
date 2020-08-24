@@ -32,6 +32,7 @@ namespace InsERTSubiektNexo.XAF.Module.Services
                 var danaDoTabeli = new BusinessObjects.Asortyment() { 
                     Nazwa = dana.Nazwa, 
                     CenaEwidencyjna = dana.CenaEwidencyjna, 
+                    Symbol = dana.Symbol,
                     Opis_Produktu = dana.Opis 
                 };
                 rezultat.Add(danaDoTabeli);

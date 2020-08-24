@@ -23,11 +23,18 @@ namespace InsERTSubiektNexo.XAF.Module {
     public sealed partial class XAFModule : ModuleBase {
         private readonly SerwisAsortymentow _srvAsortymentow;
         private readonly SerwisPodmiotow _srvPodmiotow;
+        Dictionary<int, Asortyment> asortymentyCache;
         public XAFModule() {
-            InitializeComponent();
-			BaseObject.OidInitializationMode = OidInitializationMode.AfterConstruction;
             _srvAsortymentow = new SerwisAsortymentow();
             _srvPodmiotow = new SerwisPodmiotow();
+            asortymentyCache = new Dictionary<int, Asortyment>();
+            var tmp  =  _srvAsortymentow.PodajWszystkieAsortymenty();
+            for (int i = 0; i < tmp.Count; i++)
+            {
+                asortymentyCache.Add(i, tmp[i]);
+            }
+            InitializeComponent();
+			BaseObject.OidInitializationMode = OidInitializationMode.AfterConstruction;
         }
         public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB) {
             ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);
@@ -49,14 +56,42 @@ namespace InsERTSubiektNexo.XAF.Module {
             if (nonPersistentObjectSpace != null)
             {
                 nonPersistentObjectSpace.ObjectsGetting += ObjectSpace_ObjectsGetting;
+                nonPersistentObjectSpace.ObjectGetting += NonPersistentObjectSpace_ObjectGetting;
+                nonPersistentObjectSpace.Committing += NonPersistentObjectSpace_Committing;
+            }
+        }
+        private void NonPersistentObjectSpace_ObjectGetting(object sender, ObjectGettingEventArgs e)
+        {
+            if (e.SourceObject is Asortyment)
+            {
+                ((IObjectSpaceLink)e.TargetObject).ObjectSpace = (IObjectSpace)sender;
+            }
+        }
+        private void NonPersistentObjectSpace_Committing(Object sender, CancelEventArgs e)
+        {
+            IObjectSpace objectSpace = (IObjectSpace)sender;
+            foreach (Object obj in objectSpace.ModifiedObjects)
+            {
+                Asortyment myobj = obj as Asortyment;
+                if (obj != null)
+                {
+                    //
+                }
             }
         }
         private void ObjectSpace_ObjectsGetting(Object sender, ObjectsGettingEventArgs e)
         {
+            var objectSpace = (IObjectSpace)sender;
+            var asortymenty = new BindingList<Asortyment>();
             if (e.ObjectType == typeof(BusinessObjects.Asortyment))
             {
-                BindingList<BusinessObjects.Asortyment> asortymenty = _srvAsortymentow.PodajWszystkieAsortymenty();
-
+                asortymenty.AllowNew = false;
+                asortymenty.AllowEdit = true;
+                asortymenty.AllowRemove = false;
+                foreach (var item in asortymentyCache.Values)
+                {
+                    asortymenty.Add(objectSpace.GetObject<Asortyment>(item));
+                }
                 e.Objects = asortymenty;
             }
         }

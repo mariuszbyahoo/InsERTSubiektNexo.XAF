@@ -24,6 +24,7 @@ namespace InsERTSubiektNexo.XAF.Module.BusinessObjects
         private IObjectSpace objectSpace;
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
+            if(objectSpace != null) objectSpace.SetModified(this);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         public Asortyment()
@@ -43,7 +44,12 @@ namespace InsERTSubiektNexo.XAF.Module.BusinessObjects
         public string Symbol_Produktu { get { return this.Symbol; } }
 
         [EditorBrowsable(EditorBrowsableState.Always)]
-        public string Opis_Produktu { get {return this.Opis; } set { this.Opis = value; } }
+        public string Opis_Produktu { get {return this.Opis; } 
+            set { 
+                this.Opis = value;
+                OnPropertyChanged(this.Opis);
+            } 
+        }
 
         //private string sampleProperty;
         //[XafDisplayName("My display name"), ToolTip("My hint message")]

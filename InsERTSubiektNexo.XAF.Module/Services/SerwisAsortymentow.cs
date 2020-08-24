@@ -29,8 +29,12 @@ namespace InsERTSubiektNexo.XAF.Module.Services
             var rezultat = new BindingList<BusinessObjects.Asortyment>();
             foreach (var dana in dane)
             {
-                var inputDana = new BusinessObjects.Asortyment() { Nazwa = dana.Nazwa, CenaEwidencyjna = dana.CenaEwidencyjna };
-                rezultat.Add(inputDana);
+                var danaDoTabeli = new BusinessObjects.Asortyment() { 
+                    Nazwa = dana.Nazwa, 
+                    CenaEwidencyjna = dana.CenaEwidencyjna, 
+                    Opis_Produktu = dana.Opis 
+                };
+                rezultat.Add(danaDoTabeli);
             }
             return rezultat;
         }

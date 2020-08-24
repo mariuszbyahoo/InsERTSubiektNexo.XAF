@@ -35,8 +35,13 @@ namespace InsERTSubiektNexo.XAF.Module.BusinessObjects
         [Browsable(false)]  // Hide the entity identifier from UI.
         public Guid Oid { get; set; }
 
-        public string Nazwa_Produktu { get { return this.Nazwa ; } set { this.Nazwa = value; } }
-        public decimal Cena { get { return this.CenaEwidencyjna; } set { this.CenaEwidencyjna = value;} }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string Nazwa_Produktu { get { return this.Nazwa ; }}
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public decimal Cena { get { return this.CenaEwidencyjna; }}
+
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public string Opis_Produktu { get {return this.Opis; } set { this.Opis = value; } }
 
         //private string sampleProperty;
         //[XafDisplayName("My display name"), ToolTip("My hint message")]

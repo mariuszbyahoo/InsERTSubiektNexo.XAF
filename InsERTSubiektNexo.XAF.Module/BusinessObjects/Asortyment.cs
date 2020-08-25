@@ -24,8 +24,11 @@ namespace InsERTSubiektNexo.XAF.Module.BusinessObjects
         private IObjectSpace objectSpace;
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if(objectSpace != null) objectSpace.SetModified(this);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (objectSpace != null)
+            {
+                objectSpace.SetModified(this);
+                PropertyChanged?.Invoke(this.objectSpace, new PropertyChangedEventArgs(propertyName));
+            }
         }
         public Asortyment()
         {

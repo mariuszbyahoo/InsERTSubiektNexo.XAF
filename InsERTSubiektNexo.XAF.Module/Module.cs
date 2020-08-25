@@ -72,10 +72,11 @@ namespace InsERTSubiektNexo.XAF.Module {
             IObjectSpace objectSpace = (IObjectSpace)sender;
             foreach (Object obj in objectSpace.ModifiedObjects)
             {
-                Asortyment myobj = obj as Asortyment;
-                if (obj != null)
+                // możliwość dodawania i kasowania encji powinna być wyłączona z UI, jakoś trzeba wyłączyć górną belkę.
+                Asortyment commitedObj = obj as Asortyment;
+                if (commitedObj != null)
                 {
-                    //
+                    _srvAsortymentow.ZmienOpis(commitedObj.Symbol, commitedObj.Opis);
                 }
             }
         }
